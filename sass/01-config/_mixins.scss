@@ -1,0 +1,132 @@
+// Typography
+// -------------------------
+
+@mixin font-serif--normal {
+	font-family: $serif;
+	font-weight: $regular;
+	font-style: normal;
+	font-stretch: normal;
+}
+
+@mixin font-sans--normal {
+	font-family: $sans-serif;
+	font-weight: $regular;
+	font-style: normal;
+	font-stretch: normal;
+}
+
+@mixin font-sans--medium {
+	font-family: $sans-serif;
+	font-weight: $medium;
+	font-style: normal;
+	font-stretch: normal;
+}
+
+@mixin font-sans--bold {
+	font-family: $sans-serif;
+	font-weight: $bold;
+	font-style: normal;
+	font-stretch: normal;
+}
+
+
+
+
+// Improved underlines
+// -------------------------
+
+@mixin underline($strokecolor:$black, $background:#fff, $size: 1px, $distance: 98%) {
+	@include background-image(linear-gradient( to bottom, $strokecolor 50%, $strokecolor 100%));
+	background-size: 1px $size;
+	background-repeat: repeat-x;
+	background-position: 0 $distance;
+	text-shadow: 2px 0 0 $background, -2px 0 0 $background;
+
+	&::selection {
+		text-shadow: 2px 0 0 $select-color, -2px 0 0 $select-color;
+	}
+}
+
+@mixin underline-noshadow($strokecolor:$black, $size: 1px) {
+	@include background-image(linear-gradient( to bottom, $strokecolor 50%, $strokecolor 100%));
+	background-size: 1px $size;
+	background-repeat: repeat-x;
+	background-position: 0 97%;
+}
+
+
+// Image replacement
+@mixin hide-text {
+	text-indent: -9999em;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+@mixin text-replace {
+	text-indent: -9999em;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+
+//Ellipse truncate
+@mixin ellipse {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+
+// Material Design shadows
+// -------------------------
+@mixin google-shadow($level:1){
+	@if $level == 1 {
+		box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+	}
+	@else if $level == 2 {
+		box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+	}
+	@else if $level == 3 {
+		box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+	}
+	@else if $level == 4 {
+		box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+	}
+	@else if $level == 5 {
+		box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+	}
+}
+
+
+// Media queries
+// -------------------------
+@mixin breakpoint-S {
+	@media (max-width: #{$breakpoint-S}) {
+		@content;
+	}
+}
+
+
+@mixin breakpoint-M {
+	@media (min-width: #{$breakpoint-S}) and (max-width: #{$breakpoint-L - 1px}) {
+		@content;
+	}
+}
+
+@mixin breakpoint-L {
+	@media (min-width: #{$breakpoint-L}) and (max-width: #{$breakpoint-XL - 1px}) {
+		@content;
+	}
+}
+
+@mixin breakpoint-XL {
+	@media (min-width: #{$breakpoint-XL}) {
+		@content;
+	}
+}
+
+@mixin breakpoint-min-M {
+	@media (min-width: #{$breakpoint-S}) {
+		@content;
+	}
+}

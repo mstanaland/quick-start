@@ -1,0 +1,15 @@
+h1, h2, h3, h4, h5, h6 {
+	margin: baselines(1) 0;
+	font-weight: $medium;
+	line-height: 1.2;
+	text-rendering: optimizeLegibility;
+}
+
+
+
+h1 { font-size: ems(36px); }
+h2 { font-size: ems(30px); }
+h3 { font-size: ems(24px); }
+h4 { font-size: ems(18px); }
+h5 { font-size: ems(14px); }
+h6 { font-size: ems(12px); }

@@ -1,0 +1,8 @@
+body {
+	@include font-sans--normal;
+	background-color: $background-color;
+	color: $text-color;
+	font-size: $base-font-size;
+	line-height: $base-line-height; 
+	letter-spacing: normal;
+}

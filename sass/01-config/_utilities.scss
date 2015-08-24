@@ -1,0 +1,10 @@
+// Calculate em values
+// -------------------------
+@function ems($target, $context: $base-font-size) {
+	@return ($target / $context) * 1em;
+}
+
+@function baselines($lines, $context: $base-font-size) {
+	@return ($lines * $base-line-height);
+}
+
