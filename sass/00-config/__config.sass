@@ -1,0 +1,45 @@
+@import "bourbon/bourbon"
+@import "colors"
+@import "mixins"
+@import "utilities"
+@import "meyer-reset"
+
+
+
+// Default colors
+$text-color         : $black
+$background-color   : #fff
+
+
+// Default typograhy settings
+$base-font-size     : 14px
+$base-line-height   : 1.5
+$sans-serif         : $helvetica
+$serif              : $georgia
+$regular            : 400
+$medium             : 500
+$bold               : 700
+
+
+// Neat grid settings
+// $column: 90px
+// $gutter: 30px
+// $grid-columns: 10
+// $max-width: 1200px
+
+// Neat breakpoints
+// $tablet: new-breakpoint(max-width 768px 8)
+// $mobile: new-breakpoint(max-width 480px 4)
+
+
+
+
+@import "neat/neat"
+
+body 
+  @include font-sans--normal
+  background-color: $background-color
+  color: $text-color
+  font-size: $base-font-size
+  line-height: $base-line-height 
+  letter-spacing: normal
