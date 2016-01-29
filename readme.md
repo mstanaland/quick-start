@@ -13,8 +13,9 @@ Gulp serve actions
 
 
 Gulp actions
-* compile sass
-* lint javascript using jshint
-* run imagemin on images
-* minify html using htmlmin
-* move all files to dist folder
+* Compile sass
+* Lint javascript using jshint
+* Run imagemin on images
+* Minify html using htmlmin
+* Move all files to dist folder
+* Note: CSS and Javascript files should be placed inside useref build blocks

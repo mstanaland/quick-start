@@ -28,7 +28,7 @@ gulp.task('images', function() {
       interlaced: true
     })))
     .pipe(gulp.dest('dist/images'))
-    .pipe($.size({title: 'images'}))
+    .pipe($.size({title: 'images'}));
 });
 
 
@@ -46,7 +46,6 @@ gulp.task('styles', function () {
     'bb >= 10'
   ];
 
-  // For best performance, don't add Sass partials to `gulp.src`
   return gulp.src([
     'app/styles/**/*.sass',
     'app/styles/**/*.scss',
@@ -58,12 +57,13 @@ gulp.task('styles', function () {
       precision: 10
     }).on('error', $.sass.logError))
     .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
+    .pipe($.sourcemaps.write('./'))
     .pipe(gulp.dest('.tmp/styles'))
     // Concatenate and minify styles
-    .pipe($.if('*.css', $.cssnano()))
-    .pipe($.size({title: 'styles'}))
-    .pipe($.sourcemaps.write('./'))
-    .pipe(gulp.dest('dist/styles'));
+    // .pipe($.if('*.css', $.cssnano()))
+    // .pipe($.size({title: 'styles'}))
+    // .pipe($.sourcemaps.write('./'))
+    // .pipe(gulp.dest('dist/styles'));
 });
 
 
@@ -71,17 +71,9 @@ gulp.task('styles', function () {
 gulp.task('html', function() {
   return gulp.src('app/**/*.html')
     .pipe($.useref({searchPath: '{.tmp,app}'}))
-    // Remove any unused CSS
-    // .pipe($.if('*.css', $.uncss({
-    //   html: [
-    //     'app/index.html'
-    //   ],
-    //   // CSS Selectors for UnCSS to ignore
-    //   ignore: []
-    // })))
 
-    // Concatenate and minify styles
-    // In case you are still using useref build blocks
+    // Concatenate and minify styles and scripts
+    // !!! Requires styles and scripts to be inside useref build blocks !!!
     .pipe($.if('*.css', $.cssnano()))
     .pipe($.if('*.js', $.uglify({preserveComments: 'some'})))
 
@@ -106,18 +98,6 @@ gulp.task('copy', function () {
     dot: true
   }).pipe(gulp.dest('dist'))
     .pipe($.size({title: 'copy'}));
-});
-
-
-
-//move scripts
-gulp.task('scripts', function() {
-  console.log('move scripts ran');
-  return gulp.src([
-    'app/scripts/**/*.*'
-  ], {
-    dot: true
-  }).pipe(gulp.dest('dist/scripts'));
 });
 
 
@@ -167,6 +147,6 @@ gulp.task('serve:dist', ['default'], function () {
 
 // Default task - Build production files
 gulp.task('default', ['clean'], function (cb) {
-  runSequence('styles', ['lint', 'html', 'images', 'fonts', 'scripts', 'copy'], cb);
+  runSequence('styles', ['lint', 'html', 'images', 'fonts', 'copy'], cb);
 });
 
