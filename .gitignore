@@ -35,8 +35,9 @@ Thumbs.db
 #### Build system ####
 
 node_modules/
-bower_compenents/
-.sass-cache
-*.css.map
+**/bower_components/
 build/
 dist/
+.tmp
+.sass-cache
+*.css.map
