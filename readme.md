@@ -1,10 +1,15 @@
-This is my quick-start template for basic html/js web projects. 
+#Quick start for simple web projects
+My personal boilerplate for web development based partially on Google's [Web Starter Kit](https://developers.google.com/web/starter-kit) 
 
-For distribution run `gulp`.
+## Getting started
+1. `npm install` to install the node dependencies
+2. `bower install` to install the front-end dependencies
+3. `gulp serve` to preview
 
-To preview, run `gulp serve`.
+## Distribution build
+4. `gulp` to create the distribution build
+5. `gulp serve:dist` to preview the distribution build
 
-To preview distribution build, run `gulp serve:dist`.
 
 
 Gulp serve actions
