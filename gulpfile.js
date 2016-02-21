@@ -27,9 +27,16 @@ gulp.task('images', function() {
       progressive: true,
       interlaced: true
     })))
-    .pipe(gulp.dest('dist/images'))
-    .pipe($.size({title: 'images'}));
+    .pipe(gulp.dest('dist/images'));
 });
+
+
+// Compile jade 
+gulp.task('views', function() {
+  return gulp.src('app/*.jade')
+    .pipe($.jade({pretty: true}))
+    .pipe(gulp.dest('.tmp'));
+})
 
 
 // Compile and automatically prefix stylesheets
@@ -59,28 +66,20 @@ gulp.task('styles', function () {
     .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
     .pipe($.sourcemaps.write('./'))
     .pipe(gulp.dest('.tmp/css'))
-    // Concatenate and minify styles
-    // .pipe($.if('*.css', $.cssnano()))
-    // .pipe($.size({title: 'styles'}))
-    // .pipe($.sourcemaps.write('./'))
-    // .pipe(gulp.dest('dist/styles'));
 });
 
 
 // Scan the HTML for assets and optimize them
-gulp.task('html', function() {
-  return gulp.src('app/**/*.html')
-    .pipe($.useref({searchPath: '{.tmp,app}'}))
-
-    // Concatenate and minify styles and scripts
-    // !!! Requires styles and scripts to be inside useref build blocks !!!
+gulp.task('html', ['views'], function() {
+  return gulp.src(['app/*.html', '.tmp/*.html'])
+    .pipe($.useref({searchPath: ['.tmp', 'app']}))
     .pipe($.if('*.css', $.cssnano()))
     .pipe($.if('*.js', $.uglify({preserveComments: 'some'})))
-
-    // Minify any HTML
-    .pipe($.if('*.html', $.htmlmin()))
-    // Output files
-    .pipe($.if('*.html', $.size({title: 'html', showFiles: true})))
+    .pipe($.if('*.html', $.htmlmin({
+      collapseWhitespace: true,
+      removeEmptyAttributes: true,
+      preserveLineBreaks: false
+    })))
     .pipe(gulp.dest('dist'));
 });
 
@@ -94,12 +93,13 @@ gulp.task('copy', function () {
     'app/*',
     '!app/sass',
     '!app/bower_components',
+    '!app/jade',
+    '!app/*.jade',
     '!app/*.html',
     'node_modules/apache-server-configs/dist/.htaccess'
   ], {
     dot: true
-  }).pipe(gulp.dest('dist'))
-    .pipe($.size({title: 'copy'}));
+  }).pipe(gulp.dest('dist'));
 });
 
 
@@ -107,23 +107,18 @@ gulp.task('copy', function () {
 // Copy web fonts to dist
 gulp.task('fonts', function () {
   return gulp.src(['app/fonts/**'])
-    .pipe(gulp.dest('dist/fonts'))
-    .pipe($.size({title: 'fonts'}));
+    .pipe(gulp.dest('dist/fonts'));
 });
 
 // Watch files for changes & reload
-gulp.task('serve', ['styles'], function () {
+gulp.task('serve', ['views', 'styles'], function () {
   browserSync({
     notify: false,
-    // Customize the BrowserSync console logging prefix
     logPrefix: 'WSK',
-    // Run as an https by uncommenting 'https: true'
-    // Note: this uses an unsigned certificate which on first access
-    //       will present a certificate warning in the browser.
-    // https: true,
     server: ['.tmp', 'app']
   });
 
+  gulp.watch(['app/**/*.jade'], ['views', reload]);
   gulp.watch(['app/**/*.html'], reload);
   gulp.watch(['app/sass/**/*.{sass,scss,css}'], ['styles', reload]);
   gulp.watch(['app/js/**/*.js'], ['lint']);
