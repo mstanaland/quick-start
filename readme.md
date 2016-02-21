@@ -16,6 +16,7 @@ My personal boilerplate for web development based partially on Google's [Web Sta
 ### Features
 | Feature                  | Summary                                                                                                                         |
 |--------------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| Jade compilation         | Automagically compile Jade files with `.jade` extension                                                                         |
 | Sass compilation         | Automagically compile Sass with libsass. Supports `.scss` but default is `.sass `                                               |
 | Source maps              | Adds source maps for development build                                                                                          |
 | CSS auto prefixing       | Automatically add browser refixes to compiled Sass                                                                              |
