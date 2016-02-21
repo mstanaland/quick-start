@@ -12,7 +12,7 @@ var gulp = require('gulp'),
 
 // Lint JavaScript
 gulp.task('lint', function () {
-  return gulp.src('app/scripts/**/*.js')
+  return gulp.src('app/js/**/*.js')
     .pipe(reload({stream: true, once: true}))
     .pipe($.jshint())
     .pipe($.jshint.reporter('jshint-stylish'))
@@ -47,18 +47,18 @@ gulp.task('styles', function () {
   ];
 
   return gulp.src([
-    'app/styles/**/*.sass',
-    'app/styles/**/*.scss',
-    'app/styles/**/*.css'
+    'app/sass/**/*.sass',
+    'app/sass/**/*.scss',
+    'app/sass/**/*.css'
   ])
-    .pipe($.newer('.tmp/styles'))
+    .pipe($.newer('.tmp/css'))
     .pipe($.sourcemaps.init())
     .pipe($.sass({
       precision: 10
     }).on('error', $.sass.logError))
     .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
     .pipe($.sourcemaps.write('./'))
-    .pipe(gulp.dest('.tmp/styles'))
+    .pipe(gulp.dest('.tmp/css'))
     // Concatenate and minify styles
     // .pipe($.if('*.css', $.cssnano()))
     // .pipe($.size({title: 'styles'}))
@@ -92,6 +92,8 @@ gulp.task('clean', del.bind(null, ['.tmp', 'dist/*', '!dist/.git'], {dot: true})
 gulp.task('copy', function () {
   return gulp.src([
     'app/*',
+    '!app/sass',
+    '!app/bower_components',
     '!app/*.html',
     'node_modules/apache-server-configs/dist/.htaccess'
   ], {
@@ -123,8 +125,8 @@ gulp.task('serve', ['styles'], function () {
   });
 
   gulp.watch(['app/**/*.html'], reload);
-  gulp.watch(['app/styles/**/*.{sass,scss,css}'], ['styles', reload]);
-  gulp.watch(['app/scripts/**/*.js'], ['lint']);
+  gulp.watch(['app/sass/**/*.{sass,scss,css}'], ['styles', reload]);
+  gulp.watch(['app/js/**/*.js'], ['lint']);
   gulp.watch(['app/images/**/*'], reload);
 });
 
