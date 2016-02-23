@@ -16,18 +16,22 @@ gulp.task('lint', function () {
   return gulp.src('app/js/**/*.js')
     .pipe(reload({stream: true, once: true}))
     .pipe($.jshint())
-    .pipe($.jshint.reporter('jshint-stylish'))
-    .pipe($.if(!browserSync.active, $.jshint.reporter('fail')));
+    .pipe($.jshint.reporter('jshint-stylish'));
+    // .pipe($.if(!browserSync.active, $.jshint.reporter('fail')));
 });
 
 
 // Optimize images
 gulp.task('images', function() {
   gulp.src('app/images/**/*')
-    .pipe($.cache($.imagemin({
+    .pipe($.imagemin({
       progressive: true,
-      interlaced: true
-    })))
+      interlaced: true,
+      svgoPlugins: [
+          {removeViewBox: false},
+          {cleanupIDs: false}
+      ],
+    }))
     .pipe(gulp.dest('dist/images'));
 });
 
@@ -43,12 +47,12 @@ gulp.task('views', function() {
       console.log(err);
     })
     .pipe(gulp.dest('.tmp'));
-})
+});
 
 
 // Compile and automatically prefix stylesheets
 gulp.task('styles', function () {
-  const AUTOPREFIXER_BROWSERS = [
+  var AUTOPREFIXER_BROWSERS = [
     'ie >= 10',
     'ie_mob >= 10',
     'ff >= 30',
@@ -156,4 +160,3 @@ gulp.task('serve:dist', ['default'], function () {
 gulp.task('default', ['clean'], function (cb) {
   runSequence('styles', ['lint', 'html', 'images', 'fonts', 'copy'], cb);
 });
-
