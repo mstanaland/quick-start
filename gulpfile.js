@@ -79,7 +79,7 @@ gulp.task('styles', function () {
     }).on('error', $.sass.logError))
     .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
     .pipe($.sourcemaps.write('./'))
-    .pipe(gulp.dest('.tmp/css'))
+    .pipe(gulp.dest('.tmp/css'));
 });
 
 
