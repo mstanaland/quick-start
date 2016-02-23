@@ -6,6 +6,7 @@ var gulp = require('gulp'),
     del = require('del'),
     runSequence = require('run-sequence'),
     browserSync = require('browser-sync'),
+    beep = require('beepbeep'),
     reload = browserSync.reload;
 
 
@@ -34,7 +35,13 @@ gulp.task('images', function() {
 // Compile jade 
 gulp.task('views', function() {
   return gulp.src('app/*.jade')
-    .pipe($.jade({pretty: true}))
+    .pipe($.plumber(function() {
+      beep();
+      this.emit('end');
+    }))
+    .pipe($.jade({pretty: true})).on('error', function(err) {
+      console.log(err);
+    })
     .pipe(gulp.dest('.tmp'));
 })
 
@@ -60,6 +67,9 @@ gulp.task('styles', function () {
   ])
     .pipe($.newer('.tmp/css'))
     .pipe($.sourcemaps.init())
+    .pipe($.plumber(function() {
+      beep();
+    }))
     .pipe($.sass({
       precision: 10
     }).on('error', $.sass.logError))
