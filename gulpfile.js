@@ -97,8 +97,10 @@ gulp.task('html', ['views'], function() {
     .pipe(gulp.dest('dist'));
 });
 
-// Clean output directory
-gulp.task('clean', del.bind(null, ['.tmp', 'dist/*', '!dist/.git'], {dot: true}));
+// Clean dist and .tmp directories
+gulp.task('clean', function() {
+  return del.bind(null, ['.tmp', 'dist/*', '!dist/.git'], {dot: true});
+});
 
 
 // Copy all files at the root level (app)
@@ -125,7 +127,8 @@ gulp.task('fonts', function () {
 });
 
 // Watch files for changes & reload
-gulp.task('serve', ['views', 'styles'], function () {
+gulp.task('serve', ['clean'], function () {
+  runSequence('views', 'styles');
   browserSync({
     notify: false,
     logPrefix: 'WSK',
