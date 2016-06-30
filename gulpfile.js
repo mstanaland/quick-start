@@ -11,16 +11,6 @@ var gulp = require('gulp'),
 
 
 
-// Lint JavaScript
-gulp.task('lint', function () {
-  return gulp.src('app/js/**/*.js')
-    .pipe(reload({stream: true, once: true}))
-    .pipe($.jshint())
-    .pipe($.jshint.reporter('jshint-stylish'));
-    // .pipe($.if(!browserSync.active, $.jshint.reporter('fail')));
-});
-
-
 // Optimize images
 gulp.task('images', function() {
   gulp.src('app/images/**/*')
@@ -34,6 +24,7 @@ gulp.task('images', function() {
     }))
     .pipe(gulp.dest('dist/images'));
 });
+
 
 
 // Compile jade 
@@ -50,8 +41,9 @@ gulp.task('views', function() {
 });
 
 
+
 // Compile and automatically prefix stylesheets
-gulp.task('styles', function () {
+gulp.task('styles', function() {
   var AUTOPREFIXER_BROWSERS = [
     'ie >= 10',
     'ie_mob >= 10',
@@ -83,6 +75,7 @@ gulp.task('styles', function () {
 });
 
 
+
 // Scan the HTML for assets and optimize them
 gulp.task('html', ['views'], function() {
   return gulp.src(['app/*.html', '.tmp/*.html'])
@@ -97,13 +90,16 @@ gulp.task('html', ['views'], function() {
     .pipe(gulp.dest('dist'));
 });
 
+
+
 // Clean dist and .tmp directories
 gulp.task('clean', function() {
-  return del.bind(null, ['.tmp', 'dist/*', '!dist/.git'], {dot: true});
+  return del.bind(null, ['.tmp/*', 'dist/*', '!dist/.git'], {dot: true});
 });
 
 
-// Copy all files at the root level (app)
+
+// Copy files at the root level to dist
 gulp.task('copy', function () {
   return gulp.src([
     'app/*',
@@ -121,13 +117,31 @@ gulp.task('copy', function () {
 
 
 // Copy web fonts to dist
-gulp.task('fonts', function () {
+gulp.task('fonts', function() {
   return gulp.src(['app/fonts/**'])
     .pipe(gulp.dest('dist/fonts'));
 });
 
+
+
+//Copy data to dist
+gulp.task('data', function() {
+  return gulp.src(['app/data/**'])
+    .pipe(gulp.dest('dist/data'));
+});
+
+
+
+// Copy bower items to dist
+gulp.task('bower', function() {
+  return gulp.src(['app/bower_components/**'])
+    .pipe(gulp.dest('dist/bower_components'));
+});
+
+
+
 // Watch files for changes & reload
-gulp.task('serve', ['clean'], function () {
+gulp.task('serve', ['clean'], function() {
   runSequence('views', 'styles');
   browserSync({
     notify: false,
@@ -138,7 +152,7 @@ gulp.task('serve', ['clean'], function () {
   gulp.watch(['app/**/*.jade'], ['views', reload]);
   gulp.watch(['app/**/*.html'], reload);
   gulp.watch(['app/sass/**/*.{sass,scss,css}'], ['styles', reload]);
-  gulp.watch(['app/js/**/*.js'], ['lint']);
+  gulp.watch(['app/js/**/*.js'], reload);
   gulp.watch(['app/images/**/*'], reload);
 });
 
@@ -161,5 +175,5 @@ gulp.task('serve:dist', ['default'], function () {
 
 // Default task - Build production files
 gulp.task('default', ['clean'], function (cb) {
-  runSequence('styles', ['lint', 'html', 'images', 'fonts', 'copy'], cb);
+  runSequence('styles', ['html', 'images', 'fonts', 'copy', 'data', 'bower'], cb);
 });
