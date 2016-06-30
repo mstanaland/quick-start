@@ -27,7 +27,7 @@ gulp.task('images', function() {
 
 
 
-// Compile jade 
+// Compile jade
 gulp.task('views', function() {
   return gulp.src('app/*.jade')
     .pipe($.plumber(function() {
